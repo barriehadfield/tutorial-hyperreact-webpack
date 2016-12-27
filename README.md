@@ -68,3 +68,21 @@ module.exports = {
     },
 };
 ```
+
+Then create a folder called webpack and add the following two files:
+
+```javascript
+// webpack/client_only.js
+// any packages that depend specifically on the DOM go here
+// for example the webpack css loader generates code that will break prerendering
+console.log('client_only.js loaded');
+```
+
+```javascript
+// webpack/client_and_server.js
+// all other packages that you can run on both server (prerendering) and client go here
+// most well behaved packages can be required here
+ReactDOM = require('react-dom')
+React = require('react')
+console.log('client_and_server.js loaded')
+```
