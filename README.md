@@ -4,15 +4,13 @@
 
 In a Isomorphic Ruby world, we need a good way of including Ruby and JavaScript components so they co-exist and play nicely together.
 
-Most Ruby libraries are distributed as Gems whereas (these days) most Javascript components are distributed through NPM (and now more recently Yarn). Webpack co-exists well with Rails and the combination of Rails, Yarn, Sprockets and Webpack (albeit a little tricky today to setup) looks like it might become a standard within the Rails community.
+Most Ruby libraries are distributed as Gems whereas (these days) most Javascript components are distributed through NPM. Webpack co-exists well with Rails and the combination of Rails, Yarn, Sprockets and Webpack looks like it might become a standard within the Rails community.
 
-This tutorial will take you through [Setup](#setup) of NPM and Webpack, [Usage](#usage) instructions for adding new components and end with an [Example](#example) of adding a new JavaScript component to a HyperReact project.
+This tutorial will take you through [Setup](#setup) of NPM and Webpack, [Usage](#usage) instructions for adding new components and then give an [Example](#example) of adding a new JavaScript component to a HyperReact project.
 
-This tutorial assumes that NPM is installed. Please see the NPM websites for installation instructions.
+This tutorial assumes that NPM is installed. Please see the [NPM website](https://www.npmjs.com/) for installation instructions.
 
-+ [NPM](https://www.npmjs.com/)
-
-Additionally, this tutorial starts with an existing Rails app with **HyperReact already setup and working**. For more information on hot to get to that stage, please see the [HyperReact and Rails Tutorial](http://ruby-hyperloop.io/tutorials/hyperreact_with_rails/).
+Additionally, this tutorial starts with an existing Rails app with **HyperReact already setup and working**. For more information on how to get to that stage, please see the [HyperReact and Rails Tutorial](http://ruby-hyperloop.io/tutorials/hyperreact_with_rails/).
 
 ## Setup
 
