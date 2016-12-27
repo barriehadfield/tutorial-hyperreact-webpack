@@ -2,9 +2,9 @@
 
 ## Overview and prerequisite
 
-In a Isomorphic Ruby world, we need a good way of including Ruby and Javascript components so they co-exist and play nicely together.
+In a Isomorphic Ruby world, we need a good way of including Ruby and JavaScript components so they co-exist and play nicely together.
 
-Most Ruby libraries are distributed as Gems whereas (these days) most Javascript components are distributed through NPM (and now more recently Yarn). Webpack co-exists well with Rails (sprockets) and the combination of Rails, Yarn, Sprockets and Webpack (albeit a little tricky today to setup) looks like it might become a standard with Rails.
+Most Ruby libraries are distributed as Gems whereas (these days) most Javascript components are distributed through NPM (and now more recently Yarn). Webpack co-exists well with Rails and the combination of Rails, Yarn, Sprockets and Webpack (albeit a little tricky today to setup) looks like it might become a standard within the Rails community.
 
 This tutorial assumes that NPM is installed. Please see the NPM websites for installation instructions.
 
@@ -12,10 +12,9 @@ This tutorial assumes that NPM is installed. Please see the NPM websites for ins
 
 Additionally, this tutorial starts with an existing Rails app with **HyperReact already setup and working**. For more information on hot to get to that stage, please see the [HyperReact and Rails Tutorial](http://ruby-hyperloop.io/tutorials/hyperreact_with_rails/).
 
-## Getting started
+## Setup
 
 If you have completed all the steps above, let's get started - there are a few steps to this process:
-
 + Adding Webpack to your project
 + Setting up Webpack so that it generates assets for server side pre-rendering and client side rendering
 + Installing React and ReactDOM via NPM
@@ -40,7 +39,7 @@ The commands above will have created a `package.json` (similar concept to a Gemf
 
 ### Step 2 - Setting up Webpack
 
-Now that we have Webpack, we need to add 3 boiler plate files to configure it. As you add more javascript packages you will be updating these files. Again this is similar to updating your Gemfile when you add new gems to a project.
+Now that we have Webpack, we need to add 3 boiler plate files to configure it. As you add more JavaScript packages you will be updating these files. Again this is similar to updating your Gemfile when you add new gems to a project.
 
 Add `webpack.config.js` to the root of your project:
 
@@ -117,7 +116,7 @@ client_and_server.js  1.61 kB       0  [emitted]  client_and_server
 ```
 Our `client_and_server.js` and `client_only.js` bundles are built and ready to be included in our application. If you look in your `app/assets/javascripts/webpack` folder you should see the two files there.
 
-### Step x - Adding Webpack bundles to the Rails asset pipeline
+### Step 5 - Adding Webpack bundles to the Rails asset pipeline
 
 Finally we need to require these two bundles into our rails asset pipeline.
 
@@ -133,3 +132,50 @@ Then edit `app/views/components.rb` and directly after `require 'hyper-react'` a
 require 'webpack/client_and_server.js'
 require 'reactrb/auto-import'
 ```
+
+### Step 6 - Installing React and ReactDOM
+
+This step is really simple as we have NPM installed. Just run these two commands:
+
+`npm install react --save` to install React
+`npm install react-dom --save` to install ReactDOM
+
+Note how this modifies your 'package.json' and installs React and ReactDOM in your `node_modules` folder.
+
+Next we need to `require` them into `client_and_server.js`:
+
+```javascript
+// webpack/client_and_server.js
+ReactDOM = require('react-dom')
+React = require('react')
+```
+
+And finally we need to run `webpack` to add them to the bundle:
+
+```
+webpack
+```
+
+The output should look something like this:
+
+```
+Hash: db338e21dcc44f66e5b5
+Version: webpack 1.14.0
+Time: 737ms
+               Asset     Size  Chunks             Chunk Names
+client_and_server.js   740 kB       0  [emitted]  client_and_server
+      client_only.js  1.61 kB       1  [emitted]  client_only
+   [0] ./webpack/client_and_server.js 271 bytes {0} [built]
+   [0] ./webpack/client_only.js 206 bytes {1} [built]
+    + 177 hidden modules
+```
+
+Note that `client_and_server.js` has gone from 1.61kB to 740kB as it now includes the source of React and ReactDOM.
+
+## Usage
+
+Now that we have completed the setup, using NPM and Webpack to include new JavaScript components is simply a case of running Step 6 again for each component you would like to add.
+
++ Install the component using NPM `npm install xx --save`
++ `require` the component into either `webpack/client_and_server.js ` or `webpack/client_only.js `
++ Run the `webpack` command to rebuild your bundles
