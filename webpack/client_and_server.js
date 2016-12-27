@@ -3,4 +3,5 @@
 // most well behaved packages can be required here
 ReactDOM = require('react-dom')
 React = require('react')
+ReactPlayer = require('react-player')
 console.log('client_and_server.js loaded')

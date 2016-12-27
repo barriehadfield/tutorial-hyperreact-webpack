@@ -6,6 +6,8 @@ In a Isomorphic Ruby world, we need a good way of including Ruby and JavaScript 
 
 Most Ruby libraries are distributed as Gems whereas (these days) most Javascript components are distributed through NPM (and now more recently Yarn). Webpack co-exists well with Rails and the combination of Rails, Yarn, Sprockets and Webpack (albeit a little tricky today to setup) looks like it might become a standard within the Rails community.
 
+This tutorial will take you through [Setup](#setup) of NPM and Webpack, [Usage](#usage) instructions for adding new components and end with an [Example](#example) of adding a new JavaScript component to a HyperReact project.
+
 This tutorial assumes that NPM is installed. Please see the NPM websites for installation instructions.
 
 + [NPM](https://www.npmjs.com/)
@@ -82,8 +84,6 @@ console.log('client_only.js loaded');
 // webpack/client_and_server.js
 // all other packages that you can run on both server (prerendering) and client go here
 // most well behaved packages can be required here
-ReactDOM = require('react-dom')
-React = require('react')
 console.log('client_and_server.js loaded')
 ```
 
@@ -114,7 +114,7 @@ client_and_server.js  1.61 kB       0  [emitted]  client_and_server
    [0] ./webpack/client_and_server.js 214 bytes {0} [built]
    [0] ./webpack/client_only.js 206 bytes {1} [built]```
 ```
-Our `client_and_server.js` and `client_only.js` bundles are built and ready to be included in our application. If you look in your `app/assets/javascripts/webpack` folder you should see the two files there.
+Our `client_and_server.js` and `client_only.js` bundles are built and ready to be included in our application. If you look in your `app/assets/javascripts/webpack` folder you should see the two files there. Note that these bundles are empty at the moment as we have not added any JavaScript components yet. We will do that in Step 6.
 
 ### Step 5 - Adding Webpack bundles to the Rails asset pipeline
 
@@ -174,8 +174,45 @@ Note that `client_and_server.js` has gone from 1.61kB to 740kB as it now include
 
 ## Usage
 
-Now that we have completed the setup, using NPM and Webpack to include new JavaScript components is simply a case of running Step 6 again for each component you would like to add.
+Now that we have completed the setup, using NPM and Webpack to include new JavaScript components is simply a case of running Step 6 again for each component you would like to add. You simply follow these three steps:
 
 + Install the component using NPM `npm install xx --save`
 + `require` the component into either `webpack/client_and_server.js ` or `webpack/client_only.js `
 + Run the `webpack` command to rebuild your bundles
+
+## Example
+
+To complete this tutorial, let's install a React component and access it in HyperReact.
+
+We are going to use [Pete Cook’s React rplayr](https://github.com/CookPete/playr) to play a YouTube video.
+
+First let’s install the component via NPM:
+
+```
+npm install react-player --save
+```
+
+Next we need to `require` it in `webpack/client_and_server.js`
+
+```javascript
+// webpack/client_and_server.js
+ReactPlayer = require('react-player')
+```
+
+Then run `webpack` so it can be bundled
+
+```
+webpack
+```
+
+And then finally let’s add it to a HyperReact component:
+
+```ruby
+def render
+  div do
+    ReactPlayer(url:  'https://www.youtube.com/embed/FzCsDVfPQqk',
+      playing: true
+    )
+  end
+end
+```
