@@ -90,7 +90,46 @@ console.log('client_and_server.js loaded')
 
 ### Step 3 - Installing React and ReactDOM
 
-This step is really simple as we have NPM installed. Just run these two commands. Note how this modifies your 'package.json' and installs React and ReactDOM in your `node_modules` folder.
+This step is really simple as we have NPM installed. Just run these two commands:
 
 `npm install react --save` to install React
 `npm install react-dom --save` to install ReactDOM
+
+Note how this modifies your 'package.json' and installs React and ReactDOM in your `node_modules` folder.
+
+### Step 4 - Using Webpack to build your client and server bundles
+
+Simply run this command:
+
+`webpack`
+
+You should see a result something like this:
+
+```
+Hash: 756a1dc4a11c8fccd0a4
+Version: webpack 1.14.0
+Time: 55ms
+               Asset     Size  Chunks             Chunk Names
+client_and_server.js  1.61 kB       0  [emitted]  client_and_server
+      client_only.js  1.61 kB       1  [emitted]  client_only
+   [0] ./webpack/client_and_server.js 214 bytes {0} [built]
+   [0] ./webpack/client_only.js 206 bytes {1} [built]```
+```
+Our `client_and_server.js` and `client_only.js` bundles are built and ready to be included in our application. If you look in your `app/assets/javascripts/webpack` folder you should see the two files there.
+
+### Step x - Adding Webpack bundles to the Rails asset pipeline
+
+Finally we need to require these two bundles into our rails asset pipeline.
+
+Edit `app/assets/javascript/application.js` and add
+
+```ruby
+//= require 'webpack/client_only'
+```
+
+Then edit `app/views/components.rb` and directly after `require 'hyper-react'` add the following two lines:
+
+```ruby
+require 'webpack/client_and_server.js'
+require 'reactrb/auto-import'
+```
